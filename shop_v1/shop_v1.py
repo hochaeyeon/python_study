@@ -1,10 +1,17 @@
 # 가상환경에서 진행하는게 좋음pip install pymysql
+# pip install dotenv # 환경 변수.env를 로드할 수 있는 라이브러리 
+
 import pymysql
+from dotenv import load_dotenv
+import os
+
+# .env 로드 
+load_dotenv()
 # 1. db 연결
-conn = pymysql.connect(host='127.0.0.1',
-                user  = 'root',
-                passwd = 'root1234',
-                database='shopdb'
+conn = pymysql.connect(host= os.getenv('DB_HOST'),
+                user  = os.getenv('DB_USER'),
+                passwd = os.getenv('DB_PASSWORD'),
+                database= os.getenv('DB_NAME')
                 )
 print('접속 성공')
 conn.close() # 접속 해제 
