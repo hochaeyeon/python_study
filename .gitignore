@@ -1,0 +1,8 @@
+# 가상환경
+.vscode
+# 환경 변수
+.env
+# 파이썬 관련 불필요한거 
+*.splite3
+*.db
+*.__pycache__
