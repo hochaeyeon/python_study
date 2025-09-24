@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import time
 
-
+import re
 url = 'https://www.kia.com/kr/customer-service/center/faq' # 페이지 주소 
 #웹 드라이버를 자동으로 설치하고 최신버전을 유지
 service = Service(ChromeDriverManager().install())
@@ -53,40 +53,44 @@ for panel in soup.select("div[data-cmp-hook-accordion='panel']"):
     if texts:
         # 여러 <p> 문단이 있으면 \n으로 합쳐서 하나의 답변으로 저장
         bodys.append("\n".join(texts))
-
-#print(bodys)
+# print("답변")
+# print(bodys[0])
 # print('-'*100)  
-
+print("-"*100)
   
 titles_soup = soup.select('.cmp-accordion__title')
 for title in titles_soup:
     # print(title.text)
     titles.append(title.text)
-#print(titles)
 
+print("질문")
+print(titles[0])
+print("-"*100)
+print("답변")
+print(bodys[0])
 
 result = list(zip(titles,bodys))
-#print(result)
+#print(result[0])
 
 
-# mysql 업로드 코드
-import pymysql
-from dotenv import load_dotenv
-import os
-# .env 로드
-load_dotenv()
+    # mysql 업로드 코드
+# import pymysql
+# from dotenv import load_dotenv
+# import os
+#     # .env 로드
+#     load_dotenv()
 
-def get_connection():
-    return pymysql.connect(
-        host=os.getenv("DB_HOST"),
-        user=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
-        database="faq",           # 실제 DB명 (faq 스키마)
-    )
+#     def get_connection():
+#         return pymysql.connect(
+#             host=os.getenv("DB_HOST"),
+#             user=os.getenv("DB_USER"),
+#             password=os.getenv("DB_PASSWORD"),
+#             database="faq",           # 실제 DB명 (faq 스키마)
+#         )
 
-with get_connection() as conn:
-    sql = "INSERT INTO faq.tbl (Q, A) VALUES (%s, %s)"
-    with conn.cursor() as cur:
-        cur.executemany(sql, result)   # 여러 행 한 번에 넣기
-    conn.commit()
-print("✅ MySQL에 저장 완료")
+#     with get_connection() as conn:
+#         sql = "INSERT INTO faq.tbl (Q, A) VALUES (%s, %s)"
+#         with conn.cursor() as cur:
+#             cur.executemany(sql, result)   # 여러 행 한 번에 넣기
+#         conn.commit()
+#     print("✅ MySQL에 저장 완료")
